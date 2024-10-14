@@ -1,0 +1,213 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create VPC, networking components, EC2, Security Group
+
+Parameters:
+  InstanceTypeParameter: # Configuration for VPC
+    Type: String
+    Default: t3.micro
+    AllowedValues:
+      - t3.micro
+      - t3.small
+      - t3.medium
+      - t3.large
+    Description: Configuration for VPC
+
+  ImageIDParameter: # Create parameter
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
+
+Resources:
+  VPC1:
+    Type: AWS::EC2::VPC # Create VPC
+    Properties:
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      CidrBlock: 10.192.0.0/16
+      Tags:
+        - Key: Name
+          Value: Lab1_VPC
+
+  PublicSubnet1: # Create public subnet
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - '0'
+        - Fn::GetAZs: !Ref 'AWS::Region'
+      MapPublicIpOnLaunch: 'true'
+      CidrBlock: 10.192.10.0/24
+      Tags:
+      - Key: Name
+        Value: Lab1_Group3_PublicSubnet
+      VpcId: !Ref VPC1
+  
+
+  PrivateSubnet1: # Create private subnet
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - '0'
+        - Fn::GetAZs: !Ref 'AWS::Region'
+      MapPublicIpOnLaunch: 'true'
+      CidrBlock: 10.192.11.0/24
+      Tags:
+      - Key: Name
+        Value: Lab1_Group3_PrivateSubnet
+      VpcId: !Ref VPC1
+
+  InternetGateway1: # Create internet gateway
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_InternetGateway
+
+  GatewayAttachment:  # Attach Internetgateway1 to VPC and establish connection between VPC and Internet
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC1
+      InternetGatewayId: !Ref InternetGateway1
+
+
+  VPCDefaultSecurityGroup: # Create VPC default security group 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Default security group for VPC
+      VpcId: !Ref VPC1
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_VPCDefaultSecurityGroup
+
+  PublicRouteTable: # Create Public route table
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC1
+      Tags:
+        - Key: Name
+          Value: Public Route Table
+  
+  PublicRoute: # Create route in public route table
+    Type: AWS::EC2::Route
+    DependsOn: GatewayAttachment # attach InternetGateway to VPC before create PublicRoute
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway1 # Allow traffics go through InternetGateway
+
+  PublicSubnet1PublicRouteTableAssociation: # Attach Public route table with PublicSubnet1
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+         RouteTableId: !Ref PublicRouteTable
+         SubnetId: !Ref PublicSubnet1
+
+  PrivateRouteTable: # Create Private route table
+    Type: AWS::EC2::RouteTable
+    Properties:
+         VpcId: !Ref VPC1
+         Tags:
+         - Key: Name
+           Value: Private Route Table
+
+  PrivateRoute: # Create route in private route table
+    Type: AWS::EC2::Route
+    DependsOn: NATGateway # Create NATGateway before create privateroute
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref NATGateway # Allow traffics go through NATGateway
+
+  PrivateSubnet1PrivateRouteTableAssociation: # Attach Private route table with PrivateSubnet1
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+         RouteTableId: !Ref PrivateRouteTable
+         SubnetId: !Ref PrivateSubnet1
+
+  NATGateway: # Crate NAT gateway and attach ElasticIP with NAT gateway
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      AllocationId: !GetAtt ElasticIP.AllocationID # Specify ElasticIP which attach to NATGateway
+      Tags: 
+        - Key: Name
+          Value: Lab1_Group3_NATGateway
+
+  ElasticIP: # Create Elastic IP for NAT gateway
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  EC2PublicSubnetInstance: # Create instance in public subnet
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceTypeParameter # Configuration for instance
+      ImageId: !Ref ImageIDParameter 
+      NetworkInterfaces:
+        - GroupSet:
+            - !Ref EC2SecurityGroup1 # Set security group for instance
+          AssociatePublicIpAddress: 'true'
+          DeviceIndex: '0'
+          DeleteOnTermination: 'true'
+          SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PublicInstance
+
+  EC2SecurityGroup1: # Create EC2 public subnet security group 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Only accept SSH (port 22) from specific IP (or user IP)
+      VpcId: !Ref VPC1
+      SecurityGroupIngress:
+        - CidrIp: 14.169.22.188/32 # user public IP
+          FromPort: 22 # Only accept SSH (port 22)
+          ToPort: 22
+          IpProtocol: tcp
+      GroupName: EC2SecurityGroupForPublicInstance
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PublicInstanceSecurityGroup
+  
+  # EC2PrivateSubnetInstance: # Create instance in private subnet
+  #   Type: AWS::EC2::Instance
+  #   Properties:
+  #     InstanceType: !Ref InstanceTypeParameter # Configuration for instance
+  #     ImageId: 'ami-0dfcb1ef8550277af'
+  #     NetworkInterfaces:
+  #       - GroupSet:
+  #           - !Ref EC2SecurityGroup2 # Set security group for instance
+  #         AssociatePublicIpAddress: 'true'
+  #         DeviceIndex: '0'
+  #         DeleteOnTermination: 'true'
+  #         SubnetId: !Ref PrivateSubnet1
+  #     Tags:
+  #       - Key: Name
+  #         Value: Lab1_Group3_PrivateInstance
+
+
+  # EC2SecurityGroup2: # Create EC2 private subnet security group 
+  #   Type: AWS::EC2::SecurityGroup
+  #   Properties:
+  #     GroupDescription: Private EC2 Security Group
+  #     VpcId: !Ref VPC1
+  #     SecurityGroupIngress:
+  #       - CidrIp: 
+  #         FromPort: 22 # Only 
+  #         ToPort: 22
+  #         IpProtocol: tcp
+  #     GroupName: EC2SecurityGroupForPrivateInstance
+  #     Tags:
+  #       - Key: Name
+  #         Value: Lab1_Group3_PrivateInstanceSecurityGroup
+
+
+  
+
