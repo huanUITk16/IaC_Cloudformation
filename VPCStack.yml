@@ -12,7 +12,7 @@ Parameters:
       - t3.large
     Description: Configuration for VPC
 
-  ImageIDParameter: # Create parameter
+  ImageIDParameter: # Create ImageID parameter
     Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
     Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
 
@@ -111,6 +111,7 @@ Resources:
 
   PrivateRouteTable: # Create Private route table
     Type: AWS::EC2::RouteTable
+    DependsOn: PrivateRoute
     Properties:
          VpcId: !Ref VPC1
          Tags:
@@ -133,6 +134,7 @@ Resources:
 
   NATGateway: # Crate NAT gateway and attach ElasticIP with NAT gateway
     Type: AWS::EC2::NatGateway
+    DependsOn: ElasticIP # Create ElasticIP before attach to NATGateway
     Properties:
       SubnetId: !Ref PublicSubnet1
       AllocationId: !GetAtt ElasticIP.AllocationID # Specify ElasticIP which attach to NATGateway
@@ -149,25 +151,21 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: !Ref InstanceTypeParameter # Configuration for instance
-      ImageId: !Ref ImageIDParameter 
-      NetworkInterfaces:
-        - GroupSet:
-            - !Ref EC2SecurityGroup1 # Set security group for instance
-          AssociatePublicIpAddress: 'true'
-          DeviceIndex: '0'
-          DeleteOnTermination: 'true'
-          SubnetId: !Ref PublicSubnet1
+      ImageId: !Ref ImageIDParameter
+      SecurityGroupIds:
+           - !GetAtt PublicInstanceSecurityGroup
+      SubnetId: !Ref PublicSubnet1
       Tags:
         - Key: Name
           Value: Lab1_Group3_PublicInstance
 
-  EC2SecurityGroup1: # Create EC2 public subnet security group 
+  PublicInstanceSecurityGroup: # Create EC2 public subnet security group 
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Only accept SSH (port 22) from specific IP (or user IP)
       VpcId: !Ref VPC1
       SecurityGroupIngress:
-        - CidrIp: 14.169.22.188/32 # user public IP
+        - CidrIp: 116.110.40.169/32 # user public IP
           FromPort: 22 # Only accept SSH (port 22)
           ToPort: 22
           IpProtocol: tcp
@@ -176,37 +174,33 @@ Resources:
         - Key: Name
           Value: Lab1_Group3_PublicInstanceSecurityGroup
   
-  # EC2PrivateSubnetInstance: # Create instance in private subnet
-  #   Type: AWS::EC2::Instance
-  #   Properties:
-  #     InstanceType: !Ref InstanceTypeParameter # Configuration for instance
-  #     ImageId: 'ami-0dfcb1ef8550277af'
-  #     NetworkInterfaces:
-  #       - GroupSet:
-  #           - !Ref EC2SecurityGroup2 # Set security group for instance
-  #         AssociatePublicIpAddress: 'true'
-  #         DeviceIndex: '0'
-  #         DeleteOnTermination: 'true'
-  #         SubnetId: !Ref PrivateSubnet1
-  #     Tags:
-  #       - Key: Name
-  #         Value: Lab1_Group3_PrivateInstance
+  EC2PrivateSubnetInstance: # Create instance in private subnet
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceTypeParameter # Configuration for instance
+      ImageId: !Ref ImageIDParameter
+      SecurityGroupIds:
+           - !GetAtt PrivateInstanceSecurityGroup
+      SubnetId: !Ref PrivateSubnet1
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PrivateInstance
 
 
-  # EC2SecurityGroup2: # Create EC2 private subnet security group 
-  #   Type: AWS::EC2::SecurityGroup
-  #   Properties:
-  #     GroupDescription: Private EC2 Security Group
-  #     VpcId: !Ref VPC1
-  #     SecurityGroupIngress:
-  #       - CidrIp: 
-  #         FromPort: 22 # Only 
-  #         ToPort: 22
-  #         IpProtocol: tcp
-  #     GroupName: EC2SecurityGroupForPrivateInstance
-  #     Tags:
-  #       - Key: Name
-  #         Value: Lab1_Group3_PrivateInstanceSecurityGroup
+  PrivateInstanceSecurityGroup: # Create EC2 private subnet security group 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Private EC2 Security Group
+      VpcId: !Ref VPC1
+      SecurityGroupIngress:
+        - CidrIp: !GetAtt EC2PublicSubnetInstance.PublicIp # Allow instance from public subnet connect to 
+          FromPort: 22 
+          ToPort: 22
+          IpProtocol: tcp
+      GroupName: EC2SecurityGroupForPrivateInstance
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PrivateInstanceSecurityGroup
 
 
   
