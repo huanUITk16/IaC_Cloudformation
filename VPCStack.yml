@@ -111,7 +111,6 @@ Resources:
 
   PrivateRouteTable: # Create Private route table
     Type: AWS::EC2::RouteTable
-    DependsOn: PrivateRoute
     Properties:
          VpcId: !Ref VPC1
          Tags:
@@ -120,7 +119,6 @@ Resources:
 
   PrivateRoute: # Create route in private route table
     Type: AWS::EC2::Route
-    DependsOn: NATGateway # Create NATGateway before create privateroute
     Properties:
       RouteTableId: !Ref PrivateRouteTable
       DestinationCidrBlock: 0.0.0.0/0
@@ -134,10 +132,9 @@ Resources:
 
   NATGateway: # Crate NAT gateway and attach ElasticIP with NAT gateway
     Type: AWS::EC2::NatGateway
-    DependsOn: ElasticIP # Create ElasticIP before attach to NATGateway
     Properties:
       SubnetId: !Ref PublicSubnet1
-      AllocationId: !GetAtt ElasticIP.AllocationID # Specify ElasticIP which attach to NATGateway
+      AllocationId: !GetAtt ElasticIP.AllocationId # Specify ElasticIP which attach to NATGateway
       Tags: 
         - Key: Name
           Value: Lab1_Group3_NATGateway
@@ -153,7 +150,7 @@ Resources:
       InstanceType: !Ref InstanceTypeParameter # Configuration for instance
       ImageId: !Ref ImageIDParameter
       SecurityGroupIds:
-           - !GetAtt PublicInstanceSecurityGroup
+        - !Ref PublicInstanceSecurityGroup
       SubnetId: !Ref PublicSubnet1
       Tags:
         - Key: Name
@@ -180,7 +177,7 @@ Resources:
       InstanceType: !Ref InstanceTypeParameter # Configuration for instance
       ImageId: !Ref ImageIDParameter
       SecurityGroupIds:
-           - !GetAtt PrivateInstanceSecurityGroup
+           - !Ref PrivateInstanceSecurityGroup
       SubnetId: !Ref PrivateSubnet1
       Tags:
         - Key: Name
@@ -201,6 +198,7 @@ Resources:
       Tags:
         - Key: Name
           Value: Lab1_Group3_PrivateInstanceSecurityGroup
+  
 
 
   
