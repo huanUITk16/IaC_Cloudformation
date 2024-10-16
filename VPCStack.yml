@@ -162,10 +162,15 @@ Resources:
       GroupDescription: Only accept SSH (port 22) from specific IP (or user IP)
       VpcId: !Ref VPC1
       SecurityGroupIngress:
-        - CidrIp: 116.110.40.169/32 # user public IP
+        - CidrIp: 14.169.68.88/32 # user public IP
           FromPort: 22 # Only accept SSH (port 22)
           ToPort: 22
           IpProtocol: tcp
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 0
+          ToPort: 0
+          IpProtocol: -1
       GroupName: EC2SecurityGroupForPublicInstance
       Tags:
         - Key: Name
@@ -183,17 +188,21 @@ Resources:
         - Key: Name
           Value: Lab1_Group3_PrivateInstance
 
-
   PrivateInstanceSecurityGroup: # Create EC2 private subnet security group 
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Private EC2 Security Group
       VpcId: !Ref VPC1
       SecurityGroupIngress:
-        - CidrIp: !GetAtt EC2PublicSubnetInstance.PublicIp # Allow instance from public subnet connect to 
+        - CidrIp: !GetAtt PublicSubnet1.CidrBlock # Allow instance from public subnet connect to instance in private subnet
           FromPort: 22 
           ToPort: 22
           IpProtocol: tcp
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 0
+          ToPort: 0
+          IpProtocol: -1
       GroupName: EC2SecurityGroupForPrivateInstance
       Tags:
         - Key: Name
