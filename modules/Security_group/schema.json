@@ -1,0 +1,37 @@
+{
+    "typeName": "Lab3::EC2::SecurityGroup::MODULE",
+    "description": "Schema for Module Fragment of type Lab3::EC2::SecurityGroup::MODULE",
+    "properties": {
+        "Resources": {
+            "properties": {
+                "PublicInstanceSecurityGroup": {
+                    "type": "object",
+                    "properties": {
+                        "Type": {
+                            "type": "string",
+                            "const": "AWS::EC2::SecurityGroup"
+                        },
+                        "Properties": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "PrivateInstanceSecurityGroup": {
+                    "type": "object",
+                    "properties": {
+                        "Type": {
+                            "type": "string",
+                            "const": "AWS::EC2::SecurityGroup"
+                        },
+                        "Properties": {
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": true
+}

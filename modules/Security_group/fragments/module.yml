@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create VPC, networking components, EC2, Security Group
+
+Parameters:
+  VPC:
+    Description: This is ID of VPC
+    Type: String
+  
+  PublicSubnetCidrBlock:
+    Description: This is CidrBlock of PublicSubnet
+    Type: String
+
+Resources:
+  PublicInstanceSecurityGroup: # Create EC2 public subnet security group 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Only accept SSH (port 22) from specific IP (or user IP)
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - CidrIp: 14.169.75.4/32 # user public IP
+          FromPort: 22 # Only accept SSH (port 22)
+          ToPort: 22
+          IpProtocol: tcp
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
+      GroupName: EC2SecurityGroupForPublicInstance
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PublicInstanceSecurityGroup
+
+  PrivateInstanceSecurityGroup: # Create EC2 private subnet security group 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Private EC2 Security Group
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - CidrIp: !Ref PublicSubnetCidrBlock # Allow instance from public subnet connect to instance in private subnet
+          FromPort: 22 
+          ToPort: 22
+          IpProtocol: tcp
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
+      GroupName: EC2SecurityGroupForPrivateInstance
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PrivateInstanceSecurityGroup
+
+  

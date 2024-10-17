@@ -1,0 +1,63 @@
+[2024-10-16T22:03:19Z] DEBUG    - Logging set up successfully
+[2024-10-16T22:03:19Z] DEBUG    - Running None: Namespace(version=False, subparser_name=None, command=<function init at 0x00000260D87BFEB0>, verbose=0, force=False, type_name=None, artifact_type=None, endpoint_url=None, region=None, target_schemas=[], profile=None)
+[2024-10-16T22:03:19Z] DEBUG    - Root directory: D:\IaC_Cloudformation\modules\EC2
+[2024-10-16T22:03:19Z] WARNING  - Initializing new project
+[2024-10-16T22:03:19Z] DEBUG    - Loading project file 'D:\IaC_Cloudformation\modules\EC2\.rpdk-config'
+[2024-10-16T22:03:47Z] DEBUG    - Resource type identifier: Lab3::EC2::Instance::MODULE
+[2024-10-16T22:03:47Z] DEBUG    - Overwriting 'D:\IaC_Cloudformation\modules\EC2\.rpdk-config'
+[2024-10-16T22:03:47Z] DEBUG    - Fragment directory: D:\IaC_Cloudformation\modules\EC2\fragments
+[2024-10-16T22:03:47Z] DEBUG    - Overwriting 'D:\IaC_Cloudformation\modules\EC2\fragments\sample.json'
+[2024-10-16T22:03:47Z] WARNING  - Initialized a new project in D:\IaC_Cloudformation\modules\EC2
+[2024-10-16T22:03:47Z] DEBUG    - Finished None
+[2024-10-17T00:17:29Z] DEBUG    - Logging set up successfully
+[2024-10-17T00:17:29Z] DEBUG    - Running submit: Namespace(version=False, subparser_name='submit', command=<function submit at 0x000001D1F279F760>, verbose=0, dry_run=False, endpoint_url=None, region='us-east-1', set_default=False, profile=None, role_arn=None, use_role=True, use_docker=False, no_docker=False)
+[2024-10-17T00:17:29Z] DEBUG    - Root directory: D:\IaC_Cloudformation\modules\EC2
+[2024-10-17T00:17:29Z] DEBUG    - Loading project file 'D:\IaC_Cloudformation\modules\EC2\.rpdk-config'
+[2024-10-17T00:17:29Z] INFO     - Validating your module fragments...
+[2024-10-17T00:17:29Z] DEBUG    - Fragment directory: D:\IaC_Cloudformation\modules\EC2\fragments
+[2024-10-17T00:17:29Z] DEBUG    - Invalid template fragment: Template fragment can't contain any Fn::ImportValue.
+Traceback (most recent call last):
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\project.py", line 653, in _load_modules_project
+    self._validate_fragments(template_fragment)
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\project.py", line 684, in _validate_fragments
+    template_fragment.validate_fragments()
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\fragment\generator.py", line 71, in validate_fragments
+    raw_fragments = read_raw_fragments(self.fragment_dir)
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\fragment\module_fragment_reader.py", line 14, in read_raw_fragments
+    return _load_fragment(_get_fragment_file(fragment_dir))
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\fragment\module_fragment_reader.py", line 24, in _load_fragment
+    return load_yaml(__first_pass_syntax_check(f.read()))
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\fragment\module_fragment_reader.py", line 55, in __first_pass_syntax_check
+    raise FragmentValidationError(
+rpdk.core.exceptions.FragmentValidationError: Template fragment can't contain any Fn::ImportValue.
+[2024-10-17T00:17:29Z] DEBUG    - Caught exit recommendation
+Traceback (most recent call last):
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\project.py", line 653, in _load_modules_project
+    self._validate_fragments(template_fragment)
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\project.py", line 684, in _validate_fragments
+    template_fragment.validate_fragments()
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\fragment\generator.py", line 71, in validate_fragments
+    raw_fragments = read_raw_fragments(self.fragment_dir)
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\fragment\module_fragment_reader.py", line 14, in read_raw_fragments
+    return _load_fragment(_get_fragment_file(fragment_dir))
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\fragment\module_fragment_reader.py", line 24, in _load_fragment
+    return load_yaml(__first_pass_syntax_check(f.read()))
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\fragment\module_fragment_reader.py", line 55, in __first_pass_syntax_check
+    raise FragmentValidationError(
+rpdk.core.exceptions.FragmentValidationError: Template fragment can't contain any Fn::ImportValue.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\cli.py", line 105, in main
+    args.command(args)
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\submit.py", line 14, in submit
+    project.load()
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\project.py", line 630, in load
+    self._load_modules_project()
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\project.py", line 656, in _load_modules_project
+    self._raise_invalid_project(msg, e)
+  File "C:\Users\Hieu\AppData\Local\Programs\Python\Python310\lib\site-packages\rpdk\core\project.py", line 274, in _raise_invalid_project
+    raise InvalidProjectError(msg) from e
+rpdk.core.exceptions.InvalidProjectError: Invalid template fragment: Template fragment can't contain any Fn::ImportValue.
+[2024-10-17T00:17:29Z] CRITICAL - Invalid template fragment: Template fragment can't contain any Fn::ImportValue.
