@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create VPC, networking components, EC2, Security Group
+
+Resources:
+  VPC:
+    Type: Lab3::EC2::VPC::MODULE
+  SecurityGroup:
+    Type: Lab3::EC2::SecurityGroup::MODULE
+  EC2:
+    Type: Lab3::EC2::Instance::MODULE
+
+  
+
+
+  
+
