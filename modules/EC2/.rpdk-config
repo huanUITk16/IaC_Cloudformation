@@ -1,5 +1,5 @@
 {
     "artifact_type": "MODULE",
-    "typeName": "Lab3::EC2::Instance::MODULE",
+    "typeName": "Lab1::EC2::Instance::MODULE",
     "settings": {}
 }

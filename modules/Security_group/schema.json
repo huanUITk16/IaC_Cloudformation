@@ -2,6 +2,43 @@
     "typeName": "Lab3::EC2::SecurityGroup::MODULE",
     "description": "Schema for Module Fragment of type Lab3::EC2::SecurityGroup::MODULE",
     "properties": {
+        "Parameters": {
+            "type": "object",
+            "properties": {
+                "VPC": {
+                    "type": "object",
+                    "properties": {
+                        "Type": {
+                            "type": "string"
+                        },
+                        "Description": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Type",
+                        "Description"
+                    ],
+                    "description": "This is ID of VPC"
+                },
+                "PublicSubnetCidrBlock": {
+                    "type": "object",
+                    "properties": {
+                        "Type": {
+                            "type": "string"
+                        },
+                        "Description": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Type",
+                        "Description"
+                    ],
+                    "description": "This is CidrBlock of PublicSubnet"
+                }
+            }
+        },
         "Resources": {
             "properties": {
                 "PublicInstanceSecurityGroup": {
