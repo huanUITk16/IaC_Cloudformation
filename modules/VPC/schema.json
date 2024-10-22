@@ -1,6 +1,6 @@
 {
-    "typeName": "Lab3::EC2::VPC::MODULE",
-    "description": "Schema for Module Fragment of type Lab3::EC2::VPC::MODULE",
+    "typeName": "Lab1::EC2::VPC::MODULE",
+    "description": "Schema for Module Fragment of type Lab1::EC2::VPC::MODULE",
     "properties": {
         "Resources": {
             "properties": {

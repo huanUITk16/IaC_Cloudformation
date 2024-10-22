@@ -1,11 +1,11 @@
 {
-    "typeName": "Lab3::EC2::SecurityGroup::MODULE",
-    "description": "Schema for Module Fragment of type Lab3::EC2::SecurityGroup::MODULE",
+    "typeName": "Lab1::EC2::SecurityGroup::MODULE",
+    "description": "Schema for Module Fragment of type Lab1::EC2::SecurityGroup::MODULE",
     "properties": {
         "Parameters": {
             "type": "object",
             "properties": {
-                "VPC": {
+                "VPC1": {
                     "type": "object",
                     "properties": {
                         "Type": {

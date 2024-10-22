@@ -19,7 +19,6 @@ Resources:
         - Key: Name
           Value: Lab1_Group3_InternetGateway
 
-
   GatewayAttachment:  # Attach Internetgateway1 to VPC and establish connection between VPC and Internet
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
@@ -123,6 +122,12 @@ Resources:
     Properties:
          RouteTableId: !Ref PrivateRouteTable
          SubnetId: !Ref PrivateSubnet1
+
+Outputs:
+  Id:
+    Value: !Ref VPC1
+  PublicSubnetCidrBlock:
+    Value: !GetAtt VPC1.CidrBlock
 
 
   

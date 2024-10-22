@@ -2,9 +2,10 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Create VPC, networking components, EC2, Security Group
 
 Parameters:
-  VPC:
+  VPC1:
     Description: This is ID of VPC
     Type: String
+    Default: 'vpc-087eac1d5c74a8e9e'
   
   PublicSubnetCidrBlock:
     Description: This is CidrBlock of PublicSubnet
@@ -15,7 +16,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Only accept SSH (port 22) from specific IP (or user IP)
-      VpcId: !Ref VPC
+      VpcId: !Ref VPC1
       SecurityGroupIngress:
         - CidrIp: 14.169.75.4/32 # user public IP
           FromPort: 22 # Only accept SSH (port 22)
@@ -33,7 +34,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Private EC2 Security Group
-      VpcId: !Ref VPC
+      VpcId: !Ref VPC1
       SecurityGroupIngress:
         - CidrIp: !Ref PublicSubnetCidrBlock # Allow instance from public subnet connect to instance in private subnet
           FromPort: 22 
