@@ -1,13 +1,66 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create VPC, networking components, EC2, Security Group
 
-Resources:
+Parameters:
   VPC:
-    Type: Lab3::EC2::VPC::MODULE
-  SecurityGroup:
-    Type: Lab3::EC2::SecurityGroup::MODULE
-  EC2:
-    Type: Lab3::EC2::Instance::MODULE
+    Description: This is ID of VPC
+    Type: String
+    Default: 'vpc-087eac1d5c74a8e9e'
+
+  PublicSubnetCidrBlock:
+    Description: This is CidrBlock of PublicSubnet
+    Type: String
+
+  InstanceTypeParameter:
+    Type: String
+    Description: Configuration for EC2 instance type
+
+  ImageIDParameter:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
+  
+  # KeyNameParameter:
+  #   Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+  #   Type: AWS::EC2::KeyPair::KeyName
+  #   ConstraintDescription: must be the name of an existing EC2 KeyPair.
+
+
+  # PublicInstanceSecurityGroupSubnetId:
+  #   Description: This is Subnet ID of PublicInstanceSecurityGroupSubnet
+  #   Type: String
+
+  # PrivateInstanceSecurityGroupSubnetId:
+  #   Description: This is Subnet ID of PrivateInstanceSecurityGroupSubnet
+  #   Type: String
+      
+
+Resources:
+  VPCModule:
+    Type: Lab1::EC2::VPC::MODULE
+
+  SecurityGroupModule:
+    Type: Lab1::EC2::SecurityGroup::MODULE
+    DependsOn: VPCModule
+    Properties:
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - CidrIp: !Ref PublicSubnetCidrBlock
+
+  # EC2Module:
+  #   Type: Lab1::EC2::Instance::MODULE
+  #   DependsOn: SecurityGroupModule
+  #   Properties:
+  #     InstanceTypeParameter: !Ref InstanceTypeParameter
+  #     ImageIDParameter: !Ref ImageIDParameter
+  #     KeyName: !Ref KeyNameParameter
+  #     SecurityGroupIds:
+  #       - !Ref PublicInstanceSecurityGroupSubnetId
+
+ 
+
+      
+
+
 
   
 
