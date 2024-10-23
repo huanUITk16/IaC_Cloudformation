@@ -1,0 +1,156 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create VPC, private subnet, public subnet, NAT Gateway, Internet Gateway, public route table, private route table
+Parameters:
+  AvailabilityZones:
+    Type: List<AWS::EC2::AvailabilityZone::Name>
+    Description: The list of Availability Zones to use for the subnets in the VPC.
+
+  VPCName:
+    Type: String
+    Description: The name of the VPC.
+
+  VPCCidr:
+    Type: String
+    Description: The CIDR block for the VPC.
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+
+  PublicSubnetCidr:
+    Type: String
+    Description: The CIDR block for the public subnet located in Availability Zone 1.
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+
+  PrivateSubnetCidr:
+    Type: String
+    Description: The CIDR block for the public subnet located in Availability Zone 2.
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+Resources:
+  VPC1:
+    Type: AWS::EC2::VPC # Create VPC
+    Properties:
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      CidrBlock: !Ref VPCCidr
+      Tags:
+        - Key: Name
+          Value: !Ref VPCName
+
+  VPCDefaultSecurityGroup: # Create VPC default security group 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Default security group for VPC
+      VpcId: !Ref VPC1
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_VPCDefaultSecurityGroup
+
+  PublicSubnet1: # Create public subnet
+      Type: AWS::EC2::Subnet
+      Properties:
+        AvailabilityZone: !Select [0, !Ref AvailabilityZones]
+        MapPublicIpOnLaunch: 'true'
+        CidrBlock: !Ref PublicSubnetCidr
+        Tags:
+        - Key: Name
+          Value: Lab1_Group3_PublicSubnet
+        VpcId: !Ref VPC1
+
+  PrivateSubnet1: # Create private subnet
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [0, !Ref AvailabilityZones]
+      MapPublicIpOnLaunch: 'true'
+      CidrBlock: !Ref PrivateSubnetCidr
+      Tags:
+      - Key: Name
+        Value: Lab1_Group3_PrivateSubnet
+      VpcId: !Ref VPC1
+
+  PublicRouteTable: # Create public route table 
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC1
+      Tags:
+        - Key: Name
+          Value: PublicSubnet1
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: PublicRouteTable
+      SubnetId:
+        Ref: PublicSubnet1
+
+  NATGateway: # Crate NAT gateway and attach ElasticIP with NAT gateway
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      AllocationId: !GetAtt ElasticIP.AllocationId # Specify ElasticIP which attach to NATGateway
+      Tags: 
+        - Key: Name
+          Value: Lab1_Group3_NATGateway
+
+  ElasticIP: # Create Elastic IP for NAT gateway
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  PrivateRouteTable: # Create Private route table
+    Type: AWS::EC2::RouteTable
+    Properties:
+         VpcId: !Ref VPC1
+         Tags:
+         - Key: Name
+           Value: Private Route Table
+
+  PrivateRoute: # Create route in private route table
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref NATGateway # Allow traffics go through NATGateway
+
+  PrivateSubnet1RouteTableAssociation: # Attach Private route table with PrivateSubnet1
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+         RouteTableId: !Ref PrivateRouteTable
+         SubnetId: !Ref PrivateSubnet1
+
+  InternetGateway1: # Create internet gateway
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_InternetGateway
+
+  GatewayAttachment:  # Attach Internetgateway1 to VPC and establish connection between VPC and Internet
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC1
+      InternetGatewayId: !Ref InternetGateway1
+  
+Outputs:
+  VPCID:
+    Description: VPC ID
+    Value: !GetAtt VPC1.VpcId 
+  PublicSubnet1:
+    Description: SubnetId of public subnet 1
+    Value: !Ref PublicSubnet1
+  PrivateSubnet1:
+    Description: SubnetId of private subnet 1
+    Value: !Ref PrivateSubnet1
+  PublicRouteTable:
+    Description: The ID of the public route table
+    Value: !Ref PublicRouteTable
+  PublicRouteTableAssociation:
+    Description: The ID of the public route table association
+    Value: !Ref PublicSubnet1RouteTableAssociation
