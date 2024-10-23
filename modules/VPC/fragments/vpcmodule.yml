@@ -73,7 +73,13 @@ Resources:
       - Key: Name
         Value: Lab1_Group3_PrivateSubnet
       VpcId: !Ref VPC1
-
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: GatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway1
   PublicRouteTable: # Create public route table 
     Type: AWS::EC2::RouteTable
     Properties:
@@ -81,7 +87,6 @@ Resources:
       Tags:
         - Key: Name
           Value: PublicSubnet1
-
   PublicSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:

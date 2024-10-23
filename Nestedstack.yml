@@ -31,9 +31,9 @@ Parameters:
     Type: String
     Description: Configuration for EC2 instance type
     Default: t3.micro
-  ImageIDParameter:
-    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
-    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
+  AMIIDParameter:
+    Type: String
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
   KeyNameParameter:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
     Type: AWS::EC2::KeyPair::KeyName
@@ -69,7 +69,7 @@ Resources:
       TemplateURL: https://s3bucketforgroup3.s3.us-east-1.amazonaws.com/ec2module.yml
       Parameters:
         InstanceTypeParameter: !Ref InstanceTypeParameter
-        ImageIDParameter: !Ref ImageIDParameter
+        ImageIDParameter: !Ref AMIIDParameter
         KeyNameParameter: !Ref KeyNameParameter
         PublicInstanceSecurityGroupSubnetId: !GetAtt SecurityGroupModule.Outputs.SecurityGroupPublicInstanceId
         PrivateInstanceSecurityGroupSubnetId: !GetAtt SecurityGroupModule.Outputs.SecurityGroupPrivateInstanceId
