@@ -41,8 +41,8 @@ Parameters:
       
 
 Resources:
-  VPCModule:
-    Type: AWS::CloudFormation::Stack
+  VPCModule: # Create VPC stack from module
+    Type: AWS::CloudFormation::Stack 
     Properties: 
       TemplateURL: https://s3bucketforgroup3.s3.us-east-1.amazonaws.com/vpcmodule.yml
       Parameters:
@@ -55,15 +55,15 @@ Resources:
         PublicSubnetCidr: !Ref PublicSubnetCidr
         PrivateSubnetCidr: !Ref PrivateSubnetCidr
   
-  SecurityGroupModule:
-    Type: AWS::CloudFormation::Stack
+  SecurityGroupModule: # Create SecurityGroup stack from module
+    Type: AWS::CloudFormation::Stack 
     Properties: 
       TemplateURL: https://s3bucketforgroup3.s3.us-east-1.amazonaws.com/sgmodule.yml
       Parameters:
         VPCID: !GetAtt VPCModule.Outputs.VPCID
         PublicSubnetCidr: !Ref PublicSubnetCidr
 
-  EC2Module:
+  EC2Module: # Create EC2 stack from module
     Type: AWS::CloudFormation::Stack
     Properties: 
       TemplateURL: https://s3bucketforgroup3.s3.us-east-1.amazonaws.com/ec2module.yml
