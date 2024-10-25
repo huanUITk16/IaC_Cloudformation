@@ -98,7 +98,7 @@ Resources:
   NATGateway: # Crate NAT gateway and attach ElasticIP with NAT gateway
     Type: AWS::EC2::NatGateway
     Properties:
-      SubnetId: !Ref PrivateSubnet1
+      SubnetId: !Ref PublicSubnet1
       AllocationId: !GetAtt ElasticIP.AllocationId # Specify ElasticIP which attach to NATGateway
       Tags: 
         - Key: Name
