@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      python: 3.8
+    commands:
+      - echo "Install cfn-lint..."
+      - pip install cfn-lint
+
+  build:
+    commands: 
+      - echo "Scan EC2 module..."
+      - cfn-lint -t .\modules\EC2\fragments\ec2module.yml --info
+      - echo "Successfully!"
+      - echo "Scan Security Group module..."
+      - cfn-lint -t .\modules\Security_group\fragments\sgmodule.yml --info
+      - echo "Successfully!"
+      - echo "Scan VPC module..."
+      - cfn-lint -t .\modules\VPC\fragments\vpcmodule.yml --info
+      - echo "Successfully!"
+      - echo "Scan Nestedstack.yml..."
+      - cfn-lint -t .\Nestedstack.yml
+      - echo "Successfully!"
