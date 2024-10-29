@@ -13,15 +13,15 @@ phases:
   build:
     commands: 
       - echo "Scanning EC2 module..."
-      - cfn-lint -t ./modules/EC2/fragments/ec2module.yml --info
+      - cfn-lint -t ./modules/ec2module.yml --info
       - echo "EC2 module scanned successfully!"
       
       - echo "Scanning Security Group module..."
-      - cfn-lint -t ./modules/Security_group/fragments/sgmodule.yml --info
+      - cfn-lint -t ./modules/sgmodule.yml --info
       - echo "Security Group module scanned successfully!"
       
       - echo "Scanning VPC module..."
-      - cfn-lint -t ./modules/VPC/fragments/vpcmodule.yml --info
+      - cfn-lint -t ./modules/vpcmodule.yml --info
       - echo "VPC module scanned successfully!"
       
       - echo "Scanning Nestedstack.yml..."
