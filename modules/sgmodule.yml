@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create VPC, networking components, EC2, Security Group
+
+Parameters:
+  VPCID:
+    Type: String
+    Description: VPC ID
+  
+  PublicSubnetCidr:
+    Type: String
+    Description: The CIDR block for the public subnet located in Availability Zone 1.
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+    Default: 10.0.0.0/24
+
+Resources:
+  PublicInstanceSecurityGroup: # Create EC2 public subnet security group 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Only accept SSH (port 22) from specific IP (or user IP)
+      VpcId: !Ref VPCID
+      SecurityGroupIngress:
+        - CidrIp: 14.169.75.4/32 # user public IP
+          FromPort: 22 # Only accept SSH (port 22)
+          ToPort: 22
+          IpProtocol: tcp
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
+      GroupName: EC2SecurityGroupForPublicInstance
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PublicInstanceSecurityGroup
+
+  PrivateInstanceSecurityGroup: # Create EC2 private subnet security group 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Private EC2 Security Group
+      VpcId: !Ref VPCID
+      SecurityGroupIngress:
+        - CidrIp: !Ref PublicSubnetCidr # Allow instance's IP from public subnet SSH to instance in private subnet
+          FromPort: 22 
+          ToPort: 22
+          IpProtocol: tcp
+        - IpProtocol: 'icmp' # Allow instance's IP from public subnet ping to instance in private subnet
+          FromPort: '-1'
+          ToPort: '-1'
+          CidrIp: !Ref PublicSubnetCidr
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
+      GroupName: EC2SecurityGroupForPrivateInstance
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PrivateInstanceSecurityGroup
+
+Outputs:
+  SecurityGroupPublicInstanceId:
+    Description: Security Group ID for the public instance
+    Value: !Ref PublicInstanceSecurityGroup
+
+  SecurityGroupPrivateInstanceId:
+    Description: Security Group ID for the private instance
+    Value: !Ref PrivateInstanceSecurityGroup
+
+  
