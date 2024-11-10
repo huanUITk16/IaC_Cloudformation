@@ -73,6 +73,7 @@ Resources:
       - Key: Name
         Value: Lab1_Group3_PrivateSubnet
       VpcId: !Ref VPC1
+      
   PublicRoute:
     Type: AWS::EC2::Route
     DependsOn: GatewayAttachment
