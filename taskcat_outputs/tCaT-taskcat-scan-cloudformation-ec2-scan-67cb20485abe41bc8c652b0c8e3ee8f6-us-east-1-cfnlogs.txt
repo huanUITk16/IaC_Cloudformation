@@ -1,0 +1,29 @@
+-----------------------------------------------------------------------------
+Region: us-east-1
+StackName: tCaT-taskcat-scan-cloudformation-ec2-scan-67cb20485abe41bc8c652b0c8e3ee8f6
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                           ResourceStatusReason
+--------------------------------  ------------------  --------------------------  --------------------------------------------------------------------------  ------------------------------------
+2024-11-14 13:34:49.388000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  tCaT-taskcat-scan-cloudformation-ec2-scan-67cb20485abe41bc8c652b0c8e3ee8f6
+2024-11-14 13:34:48.724000+00:00  CREATE_COMPLETE     AWS::EC2::EIP               ElasticIPInstance
+2024-11-14 13:34:39.845000+00:00  CREATE_COMPLETE     AWS::EC2::Instance          EC2PublicSubnetInstance
+2024-11-14 13:34:39.456000+00:00  CREATE_COMPLETE     AWS::EC2::Instance          EC2PrivateSubnetInstance
+2024-11-14 13:34:31.908000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP               ElasticIPInstance                                                           Resource creation Initiated
+2024-11-14 13:34:30.867000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP               ElasticIPInstance
+2024-11-14 13:34:30.500000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance          EC2PublicSubnetInstance                                                     Eventual consistency check initiated
+2024-11-14 13:34:30.466000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance          EC2PrivateSubnetInstance                                                    Eventual consistency check initiated
+2024-11-14 13:34:28.746000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance          EC2PublicSubnetInstance                                                     Resource creation Initiated
+2024-11-14 13:34:28.682000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance          EC2PrivateSubnetInstance                                                    Resource creation Initiated
+2024-11-14 13:34:26.873000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance          EC2PrivateSubnetInstance
+2024-11-14 13:34:26.821000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance          EC2PublicSubnetInstance
+2024-11-14 13:34:24.015000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-taskcat-scan-cloudformation-ec2-scan-67cb20485abe41bc8c652b0c8e3ee8f6  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 14. November 2024 08:35PM
+-----------------------------------------------------------------------------
+

@@ -1,0 +1,23 @@
+-----------------------------------------------------------------------------
+Region: us-west-2
+StackName: tCaT-taskcat-scan-cloudformation-sg-scan-63fd745283c74d2fb003aa528316f61a
+*****************************************************************************
+ResourceStatusReason:  
+The following resource(s) failed to create: [PrivateInstanceSecurityGroup,
+PublicInstanceSecurityGroup].
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                          ResourceStatusReason
+--------------------------------  ------------------  --------------------------  -------------------------------------------------------------------------  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2024-11-14 13:13:02.718000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  tCaT-taskcat-scan-cloudformation-sg-scan-63fd745283c74d2fb003aa528316f61a  The following resource(s) failed to create: [PrivateInstanceSecurityGroup, PublicInstanceSecurityGroup].
+2024-11-14 13:13:02.391000+00:00  CREATE_FAILED       AWS::EC2::SecurityGroup     PublicInstanceSecurityGroup                                                Resource handler returned message: "The vpc ID 'vpc-0c9488f0b612c79ee' does not exist (Service: Ec2, Status Code: 400, Request ID: 7b3c88e4-a20a-404a-bd32-331582bfc885)" (RequestToken: d4db6e4a-bf33-e422-53dd-679e69d90ceb, HandlerErrorCode: InvalidRequest)
+2024-11-14 13:13:02.307000+00:00  CREATE_FAILED       AWS::EC2::SecurityGroup     PrivateInstanceSecurityGroup                                               Resource handler returned message: "The vpc ID 'vpc-0c9488f0b612c79ee' does not exist (Service: Ec2, Status Code: 400, Request ID: e23819b3-874c-44bb-a1ae-10c2bda19e64)" (RequestToken: 640b9a1a-3868-4737-7206-f3284233fd07, HandlerErrorCode: InvalidRequest)
+2024-11-14 13:13:00.215000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup     PrivateInstanceSecurityGroup
+2024-11-14 13:13:00.197000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup     PublicInstanceSecurityGroup
+2024-11-14 13:12:57.984000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-taskcat-scan-cloudformation-sg-scan-63fd745283c74d2fb003aa528316f61a  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 14. November 2024 08:16PM
+-----------------------------------------------------------------------------
+

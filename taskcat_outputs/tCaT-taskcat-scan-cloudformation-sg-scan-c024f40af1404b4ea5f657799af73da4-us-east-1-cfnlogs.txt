@@ -1,0 +1,24 @@
+-----------------------------------------------------------------------------
+Region: us-east-1
+StackName: tCaT-taskcat-scan-cloudformation-sg-scan-c024f40af1404b4ea5f657799af73da4
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                          ResourceStatusReason
+--------------------------------  ------------------  --------------------------  -------------------------------------------------------------------------  ---------------------------
+2024-11-14 13:32:21.830000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  tCaT-taskcat-scan-cloudformation-sg-scan-c024f40af1404b4ea5f657799af73da4
+2024-11-14 13:32:20.802000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup     PrivateInstanceSecurityGroup
+2024-11-14 13:32:20.794000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup     PublicInstanceSecurityGroup
+2024-11-14 13:32:13.846000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup     PublicInstanceSecurityGroup                                                Resource creation Initiated
+2024-11-14 13:32:13.751000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup     PrivateInstanceSecurityGroup                                               Resource creation Initiated
+2024-11-14 13:32:11.238000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup     PrivateInstanceSecurityGroup
+2024-11-14 13:32:11.230000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup     PublicInstanceSecurityGroup
+2024-11-14 13:32:08.898000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-taskcat-scan-cloudformation-sg-scan-c024f40af1404b4ea5f657799af73da4  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 14. November 2024 08:33PM
+-----------------------------------------------------------------------------
+

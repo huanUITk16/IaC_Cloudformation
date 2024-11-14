@@ -1,0 +1,20 @@
+-----------------------------------------------------------------------------
+Region: us-east-1
+StackName: tCaT-taskcat-scan-cloudformation-ec2-scan-950243c1bffe4c21b970798a3cd84dbc
+*****************************************************************************
+ResourceStatusReason:  
+Parameter validation failed: parameter value subnet-08db3b75308ee95f0 for parameter
+name PublicSubnetId does not exist, parameter value subnet-0753c0565f436b122 for
+parameter name PrivateSubnetId does not exist
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                           ResourceStatusReason
+--------------------------------  ------------------  --------------------------  --------------------------------------------------------------------------  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2024-11-14 13:26:18.733000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  tCaT-taskcat-scan-cloudformation-ec2-scan-950243c1bffe4c21b970798a3cd84dbc  Parameter validation failed: parameter value subnet-08db3b75308ee95f0 for parameter name PublicSubnetId does not exist, parameter value subnet-0753c0565f436b122 for parameter name PrivateSubnetId does not exist
+2024-11-14 13:26:16.585000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-taskcat-scan-cloudformation-ec2-scan-950243c1bffe4c21b970798a3cd84dbc  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 14. November 2024 08:29PM
+-----------------------------------------------------------------------------
+

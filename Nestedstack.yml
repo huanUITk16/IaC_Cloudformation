@@ -44,7 +44,7 @@ Resources:
   VPCModule: # Create VPC stack from module
     Type: AWS::CloudFormation::Stack 
     Properties: 
-      TemplateURL: https://group3bucketasda.s3.us-east-1.amazonaws.com/vpcmodule.yml
+      TemplateURL: https://group3-bucket-s3.s3.us-east-1.amazonaws.com/vpcmodule.yml
       Parameters:
         AvailabilityZones:
           Fn::Join:
@@ -58,7 +58,7 @@ Resources:
   SecurityGroupModule: # Create SecurityGroup stack from module
     Type: AWS::CloudFormation::Stack 
     Properties: 
-      TemplateURL: https://group3bucketasda.s3.us-east-1.amazonaws.com/sgmodule.yml
+      TemplateURL: https://group3-bucket-s3.s3.us-east-1.amazonaws.com/sgmodule.yml
       Parameters:
         VPCID: !GetAtt VPCModule.Outputs.VPCID
         PublicSubnetCidr: !Ref PublicSubnetCidr
@@ -66,8 +66,8 @@ Resources:
   EC2Module: # Create EC2 stack from module
     Type: AWS::CloudFormation::Stack
     Properties: 
-      TemplateURL: https://group3bucketasda.s3.us-east-1.amazonaws.com/ec2module.yml
-      Parameters:
+      TemplateURL: https://group3-bucket-s3.s3.us-east-1.amazonaws.com/ec2module.yml
+      Parameters: 
         InstanceTypeParameter: !Ref InstanceTypeParameter
         ImageIDParameter: !Ref AMIIDParameter
         KeyNameParameter: !Ref KeyNameParameter

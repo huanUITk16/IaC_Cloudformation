@@ -1,0 +1,65 @@
+-----------------------------------------------------------------------------
+Region: us-east-1
+StackName: tCaT-taskcat-scan-cloudformation-vpc-scan-ff443bc1293a4971b2a3149c44fec566
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                           LogicalResourceId                                                           ResourceStatusReason
+--------------------------------  ------------------  -------------------------------------  --------------------------------------------------------------------------  ------------------------------------
+2024-11-14 13:21:09.005000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack             tCaT-taskcat-scan-cloudformation-vpc-scan-ff443bc1293a4971b2a3149c44fec566
+2024-11-14 13:21:07.322000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        PrivateRoute
+2024-11-14 13:21:06.981000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PrivateRoute                                                                Resource creation Initiated
+2024-11-14 13:21:05.826000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PrivateRoute
+2024-11-14 13:21:05.393000+00:00  CREATE_COMPLETE     AWS::EC2::NatGateway                   NATGateway
+2024-11-14 13:19:39.007000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        PublicRoute
+2024-11-14 13:19:38.725000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PublicRoute                                                                 Resource creation Initiated
+2024-11-14 13:19:37.591000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PublicRoute
+2024-11-14 13:19:37.299000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   PrivateRouteTable
+2024-11-14 13:19:37.134000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   PublicRouteTable
+2024-11-14 13:19:35.205000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                VPCDefaultSecurityGroup
+2024-11-14 13:19:32.254000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet1RouteTableAssociation
+2024-11-14 13:19:32.015000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   NATGateway                                                                  Eventual consistency check initiated
+2024-11-14 13:19:31.955000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet1RouteTableAssociation                                         Resource creation Initiated
+2024-11-14 13:19:31.422000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  PublicSubnet1RouteTableAssociation
+2024-11-14 13:19:31.230000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   NATGateway                                                                  Resource creation Initiated
+2024-11-14 13:19:31.122000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PublicSubnet1RouteTableAssociation                                          Resource creation Initiated
+2024-11-14 13:19:30.518000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet1RouteTableAssociation
+2024-11-14 13:19:30.055000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   NATGateway
+2024-11-14 13:19:30+00:00         CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PublicSubnet1RouteTableAssociation
+2024-11-14 13:19:29.967000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       PrivateSubnet1
+2024-11-14 13:19:29.538000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       PublicSubnet1
+2024-11-14 13:19:29.364000+00:00  CREATE_COMPLETE     AWS::EC2::InternetGateway              InternetGateway1
+2024-11-14 13:19:29.244000+00:00  CREATE_COMPLETE     AWS::EC2::EIP                          ElasticIP
+2024-11-14 13:19:28.284000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                VPCDefaultSecurityGroup                                                     Resource creation Initiated
+2024-11-14 13:19:27.968000+00:00  CREATE_COMPLETE     AWS::EC2::VPCGatewayAttachment         GatewayAttachment
+2024-11-14 13:19:27.295000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PrivateRouteTable                                                           Eventual consistency check initiated
+2024-11-14 13:19:27.137000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PublicRouteTable                                                            Eventual consistency check initiated
+2024-11-14 13:19:26.801000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PrivateSubnet1                                                              Resource creation Initiated
+2024-11-14 13:19:26.628000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PublicSubnet1                                                               Resource creation Initiated
+2024-11-14 13:19:26.607000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PrivateRouteTable                                                           Resource creation Initiated
+2024-11-14 13:19:26.577000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PublicRouteTable                                                            Resource creation Initiated
+2024-11-14 13:19:26.325000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCGatewayAttachment         GatewayAttachment                                                           Resource creation Initiated
+2024-11-14 13:19:25.583000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PrivateSubnet1
+2024-11-14 13:19:25.576000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                VPCDefaultSecurityGroup
+2024-11-14 13:19:25.572000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PrivateRouteTable
+2024-11-14 13:19:25.559000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PublicSubnet1
+2024-11-14 13:19:25.557000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PublicRouteTable
+2024-11-14 13:19:25.553000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCGatewayAttachment         GatewayAttachment
+2024-11-14 13:19:25.102000+00:00  CREATE_COMPLETE     AWS::EC2::VPC                          VPC1
+2024-11-14 13:19:14.452000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          ElasticIP                                                                   Eventual consistency check initiated
+2024-11-14 13:19:14.446000+00:00  CREATE_IN_PROGRESS  AWS::EC2::InternetGateway              InternetGateway1                                                            Eventual consistency check initiated
+2024-11-14 13:19:14.173000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPC                          VPC1                                                                        Resource creation Initiated
+2024-11-14 13:19:13.827000+00:00  CREATE_IN_PROGRESS  AWS::EC2::InternetGateway              InternetGateway1                                                            Resource creation Initiated
+2024-11-14 13:19:13.727000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          ElasticIP                                                                   Resource creation Initiated
+2024-11-14 13:19:12.869000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPC                          VPC1
+2024-11-14 13:19:12.858000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          ElasticIP
+2024-11-14 13:19:12.857000+00:00  CREATE_IN_PROGRESS  AWS::EC2::InternetGateway              InternetGateway1
+2024-11-14 13:19:09.799000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack             tCaT-taskcat-scan-cloudformation-vpc-scan-ff443bc1293a4971b2a3149c44fec566  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 14. November 2024 08:21PM
+-----------------------------------------------------------------------------
+

@@ -1,32 +1,32 @@
 project:
     name: taskcat-scan-cloudformation
 tests:
-    vpc-scan:
-        regions:
-            - us-east-1
-        parameters:
-            AvailabilityZones: $[taskcat_genaz_2]
-            VPCName: VPC
-            VPCCidr: 10.0.0.0/16
-            PublicSubnetCidr: 10.0.0.0/24
-            PrivateSubnetCidr: 10.0.1.0/24
-        template: ./modules/vpcmodule.yml
-    sg-scan:
-        regions:
-            - us-east-1
-        parameters: 
-            VPCID: vpc-02783945f0b6ac20c
-            PublicSubnetCidr: 10.0.0.0/24
-        template: ./modules/sgmodule.yml
+    # vpc-scan:
+    #     regions:
+    #         - us-east-1
+    #     parameters:
+    #         AvailabilityZones: $[taskcat_genaz_2]
+    #         VPCName: VPC
+    #         VPCCidr: 10.0.0.0/16
+    #         PublicSubnetCidr: 10.0.0.0/24
+    #         PrivateSubnetCidr: 10.0.1.0/24
+    #     template: ./modules/vpcmodule.yml
+    # sg-scan:
+    #     regions:
+    #         - us-east-1
+    #     parameters: 
+    #         VPCID: vpc-0c94e926e5e996d5a
+    #         PublicSubnetCidr: 10.0.0.0/24
+    #     template: ./modules/sgmodule.yml
     ec2-scan:
         regions:
             - us-east-1
         parameters:
             InstanceTypeParameter: t3.micro
             ImageIDParameter: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
-            KeyNameParameter: AWS
-            PublicInstanceSecurityGroupSubnetId: $[taskcat_ssm_/group3/PublicInstanceSecurityGroupSubnetId]
-            PrivateInstanceSecurityGroupSubnetId: $[taskcat_ssm_/group3/PrivateInstanceSecurityGroupSubnetId]
-            PublicSubnetId: $[taskcat_ssm_/group3/PublicSubnetId]
-            PrivateSubnetId: $[taskcat_ssm_/group3/PrivateSubnetId]
+            KeyNameParameter: group3
+            PublicInstanceSecurityGroupSubnetId: sg-096a07166ecbde675
+            PrivateInstanceSecurityGroupSubnetId: sg-0d08d64709174a28f
+            PublicSubnetId: subnet-047e5b4c7766f6c94
+            PrivateSubnetId: subnet-00e53003118c3f899
         template: ./modules/ec2module.yml
