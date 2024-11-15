@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Create VPC, private subnet, public subnet, NAT Gateway, Internet Gateway, public route table, private route table
+Description: Create VPC, private subnet, public subnet, NAT Gateway, Internet Gateway, public route table, private route table, Ec2 public instance, EC2 private instance, Security Group
 
 Parameters:
   AvailabilityZones:
