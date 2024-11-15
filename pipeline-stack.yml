@@ -1,31 +1,56 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Module for VPC include private subnet, public subnet, NAT Gateway, Internet Gateway, public route table, private route table
+Description: Create VPC, private subnet, public subnet, NAT Gateway, Internet Gateway, public route table, private route table
+
 Parameters:
   AvailabilityZones:
     Type: List<AWS::EC2::AvailabilityZone::Name>
     Description: The list of Availability Zones to use for the subnets in the VPC.
 
+  InstanceTypeParameter: # Configuration for VPC
+    Type: String
+    Default: t3.micro
+    AllowedValues:
+      - t3.micro
+      - t3.small
+      - t3.medium
+      - t3.large
+    Description: Configuration for VPC
+
   VPCName:
     Type: String
     Description: The name of the VPC.
+    Default: cfn-workshop-vpc
 
   VPCCidr:
     Type: String
     Description: The CIDR block for the VPC.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+    Default: 10.0.0.0/16
 
   PublicSubnetCidr:
     Type: String
     Description: The CIDR block for the public subnet located in Availability Zone 1.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+    Default: 10.0.0.0/24
 
   PrivateSubnetCidr:
     Type: String
     Description: The CIDR block for the public subnet located in Availability Zone 2.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+    Default: 10.0.1.0/24
+
+  ImageIDParameter: # Create ImageID parameter
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
+  
+  KeyNameParameter: # Create KeyName 
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+
 Resources:
   VPC1:
     Type: AWS::EC2::VPC # Create VPC
@@ -144,20 +169,75 @@ Resources:
     Properties:
       VpcId: !Ref VPC1
       InternetGatewayId: !Ref InternetGateway1
+
+  PublicInstanceSecurityGroup: # Create EC2 public subnet security group 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Only accept SSH (port 22) from specific IP (or user IP)
+      VpcId: !Ref VPC1
+      SecurityGroupIngress:
+        - CidrIp: 14.169.75.4/32 # user public IP
+          FromPort: 22 # Only accept SSH (port 22)
+          ToPort: 22
+          IpProtocol: tcp
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
+      GroupName: EC2SecurityGroupForPublicInstance
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PublicInstanceSecurityGroup
+
+  PrivateInstanceSecurityGroup: # Create EC2 private subnet security group 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Private EC2 Security Group
+      VpcId: !Ref VPC1
+      SecurityGroupIngress:
+        - CidrIp: !Ref PublicSubnetCidr # Allow instance's IP from public subnet SSH to instance in private subnet
+          FromPort: 22 
+          ToPort: 22
+          IpProtocol: tcp
+        - IpProtocol: 'icmp' # Allow instance's IP from public subnet ping to instance in private subnet
+          FromPort: '-1'
+          ToPort: '-1'
+          CidrIp: !Ref PublicSubnetCidr
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
+      GroupName: EC2SecurityGroupForPrivateInstance
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PrivateInstanceSecurityGroup
   
-Outputs:
-  VPCID:
-    Description: VPC ID
-    Value: !GetAtt VPC1.VpcId 
-  PublicSubnet1:
-    Description: SubnetId of public subnet 1
-    Value: !Ref PublicSubnet1
-  PrivateSubnet1:
-    Description: SubnetId of private subnet 1
-    Value: !Ref PrivateSubnet1
-  PublicRouteTable:
-    Description: The ID of the public route table
-    Value: !Ref PublicRouteTable
-  PublicRouteTableAssociation:
-    Description: The ID of the public route table association
-    Value: !Ref PublicSubnet1RouteTableAssociation
+  ElasticIPInstance:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      InstanceId: !GetAtt EC2PublicSubnetInstance.InstanceId
+
+  EC2PublicSubnetInstance: # Create instance in public subnet
+    Type: AWS::EC2::Instance 
+    Properties:
+      InstanceType: !Ref InstanceTypeParameter # Configuration for instance
+      ImageId: !Ref ImageIDParameter
+      KeyName: !Ref KeyNameParameter
+      SecurityGroupIds:
+        - !GetAtt PublicInstanceSecurityGroup.GroupId
+      SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PublicInstance
+
+  EC2PrivateSubnetInstance: # Create instance in private subnet
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceTypeParameter # Configuration for instance
+      ImageId: !Ref ImageIDParameter
+      KeyName: !Ref KeyNameParameter
+      SecurityGroupIds:
+        - !GetAtt PrivateInstanceSecurityGroup.GroupId
+      SubnetId: !Ref PrivateSubnet1
+      Tags:
+        - Key: Name
+          Value: Lab1_Group3_PrivateInstance

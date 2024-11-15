@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Public EC2 instance module
+Description: Private and Public EC2 instance module
 
 Parameters:
   InstanceTypeParameter: # Configuration for VPC
