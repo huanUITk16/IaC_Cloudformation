@@ -5,7 +5,7 @@ Parameters:
   AvailabilityZones:
     Type: List<AWS::EC2::AvailabilityZone::Name>
     Description: The list of Availability Zones to use for the subnets in the VPC.
-
+    Default: us-east-1a, us-east-1b
   InstanceTypeParameter: # Configuration for VPC
     Type: String
     Default: t3.micro
@@ -50,6 +50,7 @@ Parameters:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
+    Default: group3
 
 Resources:
   VPC1:

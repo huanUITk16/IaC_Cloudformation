@@ -9,6 +9,8 @@ phases:
       - echo "Installing cfn-lint..."
       - pip install --upgrade pip
       - pip install cfn-lint
+      - echo "Installing taskcat..."
+      - pip3 install taskcat
 
   build:
     commands: 
@@ -28,6 +30,14 @@ phases:
       - cfn-lint -t ./Nestedstack.yml
       - echo "Nestedstack.yml scanned successfully!"
 
+      - echo "Scanning pipeline-stack.yml..."
+      - cfn-lint -t ./pipeline-stack.yml
+      - echo "pipeline-stack scanned successfully!"
+
+      - echo "Taskcat scanning pipeline-stack.yml..."
+      - taskcat test run 
+      - echo "pipeline-stack is created in another region successfully!"
+      
 artifacts:
   files:
     - '**/*'
